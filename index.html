@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resonance — Therapeutic Sound Frequencies</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
     /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -583,10 +582,33 @@
     }
     #vol-icon { font-size: 14px; color: var(--text-muted); }
     #master-volume {
-      width: 80px;
-      height: 3px;
-      border-radius: 2px;
+      width: 110px;
+      height: 5px;
+      border-radius: 3px;
       accent-color: var(--accent);
+    }
+    #master-volume::-webkit-slider-runnable-track {
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.15);
+    }
+    #master-volume::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: -5.5px;
+    }
+    #master-volume::-moz-range-track {
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.15);
+    }
+    #master-volume::-moz-range-thumb {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
     }
 
     /* Timer */
@@ -656,7 +678,7 @@
       #waveform-canvas { display: none; }
       #now-playing-info { grid-column: 1; }
       #bar-controls { grid-column: 1; flex-wrap: wrap; gap: 8px; }
-      #master-volume { width: 60px; }
+      #master-volume { width: 85px; }
       :root { --bar-h: 120px; }
       #info-panel-inner { flex-direction: column; }
       #info-viz-container { width: 100%; height: 60px; }
@@ -673,18 +695,6 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
-    /* ── MATERIAL ICONS ── */
-    .material-icons { font-size: inherit; vertical-align: middle; line-height: 1; }
-    .category-tag .material-icons { font-size: 14px; margin-right: 4px; }
-    #cat-title .material-icons { font-size: 20px; margin-right: 6px; }
-    #play-pause-btn .material-icons { font-size: 20px; }
-    #info-close .material-icons { font-size: 16px; }
-    .layer-remove .material-icons { font-size: 16px; }
-    #vol-icon .material-icons { font-size: 16px; }
-    .card-binaural-badge .material-icons { font-size: 10px; margin-right: 2px; }
-    #info-binaural-indicator .material-icons,
-    #binaural-indicator .material-icons { font-size: 13px; margin-right: 3px; }
 
     /* ── ANIMATIONS ── */
     @keyframes fade-in {
@@ -736,7 +746,7 @@
 
     <!-- Info panel -->
     <aside id="info-panel" aria-live="polite" aria-label="Frequency details">
-      <button id="info-close" aria-label="Close"><span class="material-icons">close</span></button>
+      <button id="info-close" aria-label="Close">✕</button>
       <div id="info-panel-inner">
         <div id="info-viz-container">
           <canvas id="info-pulse-canvas" width="120" height="80"></canvas>
@@ -746,7 +756,7 @@
           <div id="info-name"></div>
           <p id="info-description"></p>
           <p id="info-source"></p>
-          <div id="info-binaural-indicator"><span class="material-icons">headphones</span>Binaural — Use headphones</div>
+          <div id="info-binaural-indicator">🎧 Binaural — Use headphones</div>
         </div>
       </div>
     </aside>
@@ -768,7 +778,7 @@
     <div id="now-playing-info">
       <span id="now-playing-name">Select a frequency</span>
       <span id="now-playing-sub"></span>
-      <div id="binaural-indicator"><span class="material-icons">headphones</span>Binaural — Use headphones</div>
+      <div id="binaural-indicator">🎧 Binaural — Use headphones</div>
     </div>
 
     <div id="bar-controls">
@@ -777,10 +787,10 @@
         <button class="wave-btn" data-wave="binaural">Binaural</button>
       </div>
 
-      <button id="play-pause-btn" aria-label="Play" disabled><span class="material-icons">play_arrow</span></button>
+      <button id="play-pause-btn" aria-label="Play" disabled>▶</button>
 
       <div id="vol-wrap">
-        <span id="vol-icon"><span class="material-icons">volume_up</span></span>
+        <span id="vol-icon">🔊</span>
         <input type="range" id="master-volume" min="0" max="1" step="0.01" value="0.3"
                aria-label="Master volume">
       </div>
@@ -810,7 +820,7 @@ const CATEGORIES = [
   {
     id: 'deep-sleep',
     name: 'Deep Sleep & Restoration',
-    icon: 'bedtime',
+    icon: '🌙',
     color: '#6366f1',
     rgb: '99,102,241',
     glow: 'rgba(99,102,241,0.25)',
@@ -819,7 +829,7 @@ const CATEGORIES = [
   {
     id: 'meditation',
     name: 'Meditation & Trance',
-    icon: 'self_improvement',
+    icon: '🧘',
     color: '#8b5cf6',
     rgb: '139,92,246',
     glow: 'rgba(139,92,246,0.25)',
@@ -828,7 +838,7 @@ const CATEGORIES = [
   {
     id: 'relaxation',
     name: 'Relaxation & Stress Relief',
-    icon: 'waves',
+    icon: '🌊',
     color: '#06b6d4',
     rgb: '6,182,212',
     glow: 'rgba(6,182,212,0.25)',
@@ -837,7 +847,7 @@ const CATEGORIES = [
   {
     id: 'focus',
     name: 'Focus & Cognition',
-    icon: 'bolt',
+    icon: '⚡',
     color: '#f59e0b',
     rgb: '245,158,11',
     glow: 'rgba(245,158,11,0.25)',
@@ -846,7 +856,7 @@ const CATEGORIES = [
   {
     id: 'neural',
     name: 'Neural Coherence & Brain Health',
-    icon: 'psychology',
+    icon: '🧠',
     color: '#3b82f6',
     rgb: '59,130,246',
     glow: 'rgba(59,130,246,0.25)',
@@ -855,7 +865,7 @@ const CATEGORIES = [
   {
     id: 'pain',
     name: 'Pain & Physical Healing',
-    icon: 'healing',
+    icon: '💚',
     color: '#22c55e',
     rgb: '34,197,94',
     glow: 'rgba(34,197,94,0.25)',
@@ -864,7 +874,7 @@ const CATEGORIES = [
   {
     id: 'chakra',
     name: 'Chakra Frequencies',
-    icon: 'flare',
+    icon: '🌈',
     color: '#a855f7',
     rgb: '168,85,247',
     glow: 'rgba(168,85,247,0.25)',
@@ -873,7 +883,7 @@ const CATEGORIES = [
   {
     id: 'solfeggio',
     name: 'Solfeggio Frequencies',
-    icon: 'music_note',
+    icon: '🎵',
     color: '#ec4899',
     rgb: '236,72,153',
     glow: 'rgba(236,72,153,0.25)',
@@ -882,7 +892,7 @@ const CATEGORIES = [
   {
     id: 'earth',
     name: 'Earth & Cosmic Resonance',
-    icon: 'public',
+    icon: '🌍',
     color: '#10b981',
     rgb: '16,185,129',
     glow: 'rgba(16,185,129,0.25)',
@@ -1333,7 +1343,7 @@ const UI = {
     CATEGORIES.forEach((cat, i) => {
       const btn = document.createElement('button');
       btn.className = 'category-tag' + (cat.id === State.activeCategoryId ? ' active' : '');
-      btn.innerHTML = `<span class="material-icons">${cat.icon}</span>${cat.name}`;
+      btn.textContent = cat.icon + ' ' + cat.name;
       btn.setAttribute('role', 'tab');
       btn.setAttribute('aria-selected', cat.id === State.activeCategoryId ? 'true' : 'false');
       btn.dataset.catId = cat.id;
@@ -1346,7 +1356,7 @@ const UI = {
     const freqs = FREQ_DATA[State.activeCategoryId] || [];
 
     // Update heading
-    document.getElementById('cat-title').innerHTML = `<span class="material-icons">${cat.icon}</span>${cat.name}`;
+    document.getElementById('cat-title').textContent = cat.icon + '  ' + cat.name;
     document.getElementById('cat-desc').textContent = cat.desc;
 
     // Apply accent
@@ -1370,7 +1380,7 @@ const UI = {
         <div class="card-hz">${freq.hz}<span>Hz</span></div>
         <div class="card-name">${freq.name}</div>
         <div class="card-desc">${freq.desc}</div>
-        ${needsBinaural ? '<span class="card-binaural-badge"><span class="material-icons">headphones</span>Binaural</span>' : ''}
+        ${needsBinaural ? '<span class="card-binaural-badge">🎧 Binaural</span>' : ''}
       `;
       grid.appendChild(card);
     });
@@ -1424,7 +1434,7 @@ const UI = {
         <div class="layer-hz">${freq.hz} Hz</div>
         <input type="range" class="layer-vol" min="0" max="1" step="0.01" value="1"
                aria-label="Volume for ${freq.name}">
-        <button class="layer-remove" aria-label="Remove ${freq.name}"><span class="material-icons">close</span></button>
+        <button class="layer-remove" aria-label="Remove ${freq.name}">✕</button>
       `;
       list.appendChild(row);
     }
@@ -1435,10 +1445,10 @@ const UI = {
     const hasSound = State.activeSounds.size > 0;
     btn.disabled = !hasSound && State.mode === 'single';
     if (hasSound) {
-      btn.innerHTML = '<span class="material-icons">pause</span>';
+      btn.textContent = '⏸';
       btn.setAttribute('aria-label', 'Pause');
     } else {
-      btn.innerHTML = '<span class="material-icons">play_arrow</span>';
+      btn.textContent = '▶';
       btn.setAttribute('aria-label', 'Play');
       btn.disabled = true;
     }
