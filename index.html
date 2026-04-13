@@ -1275,7 +1275,40 @@ const Timer = {
 };
 
 // ═══════════════════════════════════════════════
-// 5. CANVAS RENDERERS
+// 5. WAKE LOCK
+// ═══════════════════════════════════════════════
+
+const WakeLock = {
+  _sentinel: null,
+
+  async acquire() {
+    if (!('wakeLock' in navigator)) return;
+    if (this._sentinel) return;
+    try {
+      this._sentinel = await navigator.wakeLock.request('screen');
+      this._sentinel.addEventListener('release', () => { this._sentinel = null; });
+    } catch (e) {
+      // Wake lock may be denied (e.g. battery saver mode) — fail silently
+    }
+  },
+
+  release() {
+    if (this._sentinel) {
+      this._sentinel.release();
+      this._sentinel = null;
+    }
+  },
+};
+
+// Re-acquire wake lock when tab becomes visible again (OS releases it on hide)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && State.activeSounds.size > 0) {
+    WakeLock.acquire();
+  }
+});
+
+// ═══════════════════════════════════════════════
+// 7. CANVAS RENDERERS
 // ═══════════════════════════════════════════════
 
 const Canvas = {
@@ -1390,7 +1423,7 @@ const Canvas = {
 };
 
 // ═══════════════════════════════════════════════
-// 6. UI RENDERERS
+// 8. UI RENDERERS
 // ═══════════════════════════════════════════════
 
 const UI = {
@@ -1521,8 +1554,10 @@ const UI = {
     }
     if (hasSound) {
       Canvas.startWaveform();
+      WakeLock.acquire();
     } else {
       Canvas.stopWaveform();
+      WakeLock.release();
     }
   },
 
@@ -1619,7 +1654,7 @@ const UI = {
 };
 
 // ═══════════════════════════════════════════════
-// 7. EVENT WIRING
+// 9. EVENT WIRING
 // ═══════════════════════════════════════════════
 
 function bindEvents() {
@@ -1750,7 +1785,7 @@ function bindEvents() {
 }
 
 // ═══════════════════════════════════════════════
-// 8. INIT
+// 10. INIT
 // ═══════════════════════════════════════════════
 
 function init() {
