@@ -2,7 +2,7 @@
 
 An interactive web app and open knowledge base for therapeutic sound frequencies, grounded in peer-reviewed research, ancient traditions, and cymatics.
 
-**[Live Demo](https://jtruax.github.io/sound-frequencies-knowledge-base)** &nbsp;|&nbsp; **[Knowledge Base](Sound_Frequencies_Knowledge_Base.md)**
+**[Live Demo](https://jtruax.github.io/resonance-sound-frequencies)** &nbsp;|&nbsp; **[Knowledge Base](Sound_Frequencies_Knowledge_Base.md)**
 
 ---
 
