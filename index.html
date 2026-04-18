@@ -1781,8 +1781,8 @@ function bindEvents() {
     UI.updateNowPlaying();
   });
 
-  // iOS Safari: resume AudioContext on any touch
-  document.addEventListener('touchstart', () => Audio.resumeCtx(), { passive: true });
+  // iOS Safari: create and resume AudioContext inside a trusted gesture so it's never suspended
+  document.addEventListener('touchstart', () => { Audio.ensureContext(); Audio.resumeCtx(); }, { passive: true });
 }
 
 // ═══════════════════════════════════════════════

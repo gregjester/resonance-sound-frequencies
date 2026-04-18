@@ -86,7 +86,7 @@ Some ideas:
 - Build a data visualization of frequency-effect relationships
 - Use it as a research starting point for a wellness or neuroscience project
 
-If you build something with it, feel free to open an issue or discussion — we'd love to see what you make.
+If you build something with it, feel free to open an issue or discussion — I would love to see what you make.
 
 ---
 
